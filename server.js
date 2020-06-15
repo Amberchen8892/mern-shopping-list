@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose =require('mongoose');
-const items = require('./routes/api/Items');
+const items = require('./client/routes/api/Items');
 const path = require('path')
 
 const app = express();
