@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose =require('mongoose');
-const items = require('./client/routes/api/Items');
+const config = require('config');
+
 const path = require('path')
 
 const app = express();
@@ -9,16 +10,22 @@ const app = express();
 app.use(express.json());
 
 //DB config
-db=require('./config/key').mongoURI;
+// db=require('./config/key').mongoURI;
+const db = config.get('mongoURI');
+
+
 
 //connect to mongoose
 mongoose
-    .connect(db,{useNewUrlParser:true})
+    .connect(db,{useNewUrlParser:true,useCreateIndex:true, useUnifiedTopology: true})
     .then(()=>console.log("connected to monggose DB"))
     .catch(err => console.log(err));
 
 //use routes 
-app.use('/api/items', items)
+app.use('/api/items', require('./routes/api/Items'));
+app.use('/api/users', require('./routes/api/Users'));
+app.use('/api/auth', require('./routes/api/Auth'));
+app.use('/api/auth', require('./routes/api/Users'));
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
